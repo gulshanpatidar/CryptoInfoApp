@@ -1,4 +1,4 @@
-package com.example.cryptoinfoapp
+package com.example.cryptoinfoapp.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

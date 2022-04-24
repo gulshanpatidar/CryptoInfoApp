@@ -1,5 +1,8 @@
 package com.example.cryptoinfoapp.data.models
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CurrencyItem(
     val askPrice: String,
     val at: Long,

@@ -38,10 +38,11 @@ class CryptoServiceImpl(
     }
 
     override suspend fun getCryptoDetails(currencySymbol: String): Resource<CurrencyItem> {
-        val url = "${HttpRoutes.BASE_URL}?symbol=$currencySymbol"
-        val currenyResponse = try {
+        val url = HttpRoutes.BASE_URL
+        val currencyResponse = try {
             client.get<CurrencyItem>(url){
                 contentType(ContentType.Application.Json)
+                parameter("symbol",currencySymbol)
             }
         } catch (e: RedirectResponseException) {
             // 3XX responses
@@ -60,6 +61,6 @@ class CryptoServiceImpl(
             return Resource.Error(message = e.message.toString())
         }
 
-        return Resource.Success(data = currenyResponse)
+        return Resource.Success(data = currencyResponse)
     }
 }

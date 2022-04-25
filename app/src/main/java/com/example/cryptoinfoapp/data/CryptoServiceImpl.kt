@@ -38,7 +38,7 @@ class CryptoServiceImpl(
     }
 
     override suspend fun getCryptoDetails(currencySymbol: String): Resource<CurrencyItem> {
-        val url = HttpRoutes.BASE_URL
+        val url = HttpRoutes.CURRENCY_URL
         val currencyResponse = try {
             client.get<CurrencyItem>(url){
                 contentType(ContentType.Application.Json)

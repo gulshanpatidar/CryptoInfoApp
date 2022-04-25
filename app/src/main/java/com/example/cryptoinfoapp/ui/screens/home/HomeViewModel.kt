@@ -8,6 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoinfoapp.data.api.CryptoService
 import com.example.cryptoinfoapp.data.models.CurrencyItem
 import com.example.cryptoinfoapp.data.util.Resource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class HomeViewModel: ViewModel() {
@@ -17,6 +20,9 @@ class HomeViewModel: ViewModel() {
     var currencies: MutableState<ArrayList<CurrencyItem>> = mutableStateOf(ArrayList())
     var errorMessage: MutableState<String> = mutableStateOf("")
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing.asStateFlow()
+
     init {
         getCurrencies()
     }
@@ -25,12 +31,16 @@ class HomeViewModel: ViewModel() {
 
         viewModelScope.launch {
 
+            _isRefreshing.emit(true)
+
             val response = cryptoService.getCryptoList()
 
             if (response is Resource.Success){
                 currencies.value = response.data!!
+                _isRefreshing.emit(false)
             }else{
                 errorMessage.value = response.message.toString()
+                _isRefreshing.emit(false)
             }
         }
     }
